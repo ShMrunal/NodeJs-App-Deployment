@@ -1,0 +1,57 @@
+---
+- name: Deploy Docker Containers as Kubernetes Pods
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Build Docker Image
+      docker_image:
+        name: nodejs-application-image
+        path: ./Dockerfile
+
+    - name: Tag Docker image
+      docker_image:
+        name: nodejs-application-image
+        tag: latest
+
+    - name: Load Docker image into Minikube's Docker daemon
+      command: eval $(minikube docker-env) && docker load -i ./nodejs-application-image.tar
+
+    - name: Create Kubernetes deployment
+      k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: nodejs-application-deployment
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: my_app_label
+            template:
+              metadata:
+                labels:
+                  app: my_app_label
+              spec:
+                containers:
+                  - name: nodejs-application-container
+                    image: nodejs-application-image:latest
+                    ports:
+                      - containerPort: 3000
+
+    - name: Expose deployment as a service
+      k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: your_service_name
+          spec:
+            selector:
+              app: your_app_label
+            ports:
+              - protocol: TCP
+                port: 3000
+                targetPort: 3000

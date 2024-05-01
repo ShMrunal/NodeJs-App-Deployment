@@ -1,0 +1,65 @@
+---
+- name: Provision Minikube Cluster
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Install Minikube dependencies
+      package:
+        name: "{{ item }}"
+        state: present
+      with_items:
+        - curl
+        - apt-transport-https
+        - virtualbox # or your preferred VM driver for Minikube
+
+    - name: Add Docker GPG key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker repository
+      apt_repository:
+        repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable
+        state: present
+
+    - name: Install Docker
+      package:
+        name: docker-ce
+        state: present
+
+    - name: Download cri-dockerd package
+      get_url:
+        url: "https://github.com/Mirantis/cri-dockerd/releases/download/v0.3.13/cri-dockerd_0.3.13.3-0.ubuntu-jammy_amd64.deb"
+        dest: "/tmp/cri-dockerd_0.3.13.3-0.ubuntu-jammy_amd64.deb"
+
+    - name: Install cri-dockerd package
+      apt:
+        deb: "/tmp/cri-dockerd_0.3.13.3-0.ubuntu-jammy_amd64.deb"
+      become: yes
+
+    - name: Download CNI plugins tar package
+      get_url:
+        url: "https://github.com/containernetworking/plugins/releases/download/v1.4.1/cni-plugins-linux-amd64-v1.4.1.tgz"
+        dest: "/tmp/cni-plugins-linux-amd64-v1.4.1.tgz"
+
+    - name: Extract CNI plugins tar package
+      unarchive:
+        src: "/tmp/cni-plugins-linux-amd64-v1.4.1.tgz"
+        dest: "/opt/cni/bin"
+        remote_src: yes
+      become: yes
+
+    - name: Remove CNI plugins tar package
+      file:
+        path: "/tmp/cni-plugins-linux-amd64-v1.4.1.tgz"
+        state: absent
+
+    - name: Download and install Minikube
+      shell: |
+        curl -Lo minikube https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64 && chmod +x minikube && sudo mv minikube /usr/local/bin/
+      args:
+        executable: /bin/bash
+      become: yes
+
+    - name: Start Minikube
+      command: minikube start  # or

@@ -1,0 +1,19 @@
+# deploy-k8s-pods.yaml
+---
+- name: Create Kubernetes Namespace if it doesn't exist
+      k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: nodejs-application-namespace
+      become: yes
+
+- name: Deploy Docker Containers as Kubernetes Pods
+  hosts: localhost
+  tasks:
+    - name: Apply Deployment Manifests
+      k8s:
+        state: present
+        definition: "{{ lookup('file', './my-app-deployment.yaml') }}"

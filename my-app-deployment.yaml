@@ -1,0 +1,22 @@
+# my-app-deployment.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-nodejs-app
+  namespace: nodejs-application-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-nodejs-app
+  template:
+    metadata:
+      labels:
+        app: my-nodejs-app
+    spec:
+      containers:
+        - name: my-nodejs-app-container
+          image: mrunalsh/nodejs-application-image:latest
+          ports:
+            - containerPort: 3000
