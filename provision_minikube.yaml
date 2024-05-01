@@ -34,6 +34,7 @@
 
     - name: Install cri-dockerd package
       apt:
+        args: '-u $(id -u):$(id -g) -v ./'
         deb: "/tmp/cri-dockerd_0.3.13.3-0.ubuntu-jammy_amd64.deb"
       become: yes
 
