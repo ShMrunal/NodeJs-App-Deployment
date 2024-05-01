@@ -42,12 +42,21 @@ pipeline {
                 }
             }
         }
+        stage('Provision Minikube') {
+            steps {
+                ansiblePlaybook(
+                    playbook: './provision_minikube.yaml',
+                    inventory: 'localhost',
+                    credentialsId: 'ansible_credentials'
+                )
+            }
+        }
         stage('Deploy to Minikube') {
             steps {
                 ansiblePlaybook(
                     playbook: './deploy-k8s-pods.yaml',
                     inventory: 'localhost',
-                    credentialsId: 'ansible-credentials'
+                    credentialsId: 'ansible_credentials'
                 )
             }
         }
