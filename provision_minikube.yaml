@@ -34,11 +34,17 @@
 
     - name: Install cri-dockerd package
       apt:
-        name: cri-dockerd
-        state: present
         deb: "/tmp/cri-dockerd_0.3.13.3-0.ubuntu-jammy_amd64.deb"
-      become: yes
-      
+      become: yes  
+      become_user: root
+      vars:
+        ansible_become_pass: toor
+      register: package_install_result
+    
+    - name: Print installation status
+      debug:
+        var: package_install_result
+
     - name: Download CNI plugins tar package
       get_url:
         url: "https://github.com/containernetworking/plugins/releases/download/v1.4.1/cni-plugins-linux-amd64-v1.4.1.tgz"
