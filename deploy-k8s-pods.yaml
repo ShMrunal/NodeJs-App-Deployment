@@ -1,13 +1,16 @@
 ---
 - name: Create Kubernetes Namespace if it does not exist
-  k8s:
-    state: present
-    definition:
-      apiVersion: v1
-      kind: Namespace
-      metadata:
-        name: nodejs-application-namespace
-  become: yes
+  hosts: localhost
+  tasks:
+    - name: Ensure Kubernetes Namespace exists
+      k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Namespace
+          metadata:
+            name: nodejs-application-namespace
+      become: yes
 
 - name: Deploy Docker Containers as Kubernetes Pods
   hosts: localhost
