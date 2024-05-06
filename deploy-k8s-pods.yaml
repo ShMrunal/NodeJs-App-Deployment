@@ -1,6 +1,5 @@
-# deploy-k8s-pods.yaml
 ---
-- name: Create Kubernetes Namespace if it doesn't exist
+- name: Create Kubernetes Namespace if it does not exist
   k8s:
     state: present
     definition:
@@ -17,3 +16,4 @@
       k8s:
         state: present
         definition: "{{ lookup('file', './my-app-deployment.yaml') }}"
+---
