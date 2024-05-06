@@ -16,4 +16,3 @@
       k8s:
         state: present
         definition: "{{ lookup('file', './my-app-deployment.yaml') }}"
----
