@@ -8,11 +8,9 @@ const IP = '127.0.0.1';
 app.use(express.static('public')); // Serve static files
 app.use(bodyParser.json());
 
-
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '/public/index.html'));
 });
-
 
 app.post('/calculate', (req, res) => {
     const { input1, input2, operation } = req.body;

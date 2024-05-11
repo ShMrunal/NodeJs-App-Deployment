@@ -4,7 +4,7 @@
   "description": "A Basic calculator using NodeJS, HTML, and CSS. ",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --forceExit"
   },
   "keywords": [],
   "author": "",
