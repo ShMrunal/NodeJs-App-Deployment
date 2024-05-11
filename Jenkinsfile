@@ -26,7 +26,8 @@ pipeline {
                 // access app
                 script {
                     dockerImage.inside {
-                        sh 'echo test pass'
+                        sh 'echo successfully launched app'
+                        sh 'npm test'
                     }
                 }
             }
