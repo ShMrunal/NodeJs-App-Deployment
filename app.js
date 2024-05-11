@@ -54,6 +54,9 @@ function calculate(input1, input2, operation) {
 }
 
 
+module.exports = app;       // Exports the Express application
+module.exports.calculate = calculate;  // Also export the calculate function
+
 app.listen(PORT, IP, () => {
     console.log(`Server running at http://${IP}:${PORT}`);
 });
