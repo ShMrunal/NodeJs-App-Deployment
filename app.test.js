@@ -2,17 +2,17 @@ const request = require("supertest");
 const app = require("./app"); // This imports the Express app
 const calculate = require("./app").calculate; // This imports the calculate function
 
-let server;
+// let server;
 
-beforeAll(() => {
-  // Start the server before running tests
-  server = app.listen(3000); // Adjust the port as needed
-});
+// beforeAll(() => {
+//   // Start the server before running tests
+//   server = app.listen(3000); // Adjust the port as needed
+// });
 
-afterAll((done) => {
-  // Close the server after all tests are done
-  server.close(done);
-});
+// afterAll((done) => {
+//   // Close the server after all tests are done
+//   server.close(done);
+// });
 
 describe("Calculator Functionality", () => {
   describe("Unit Tests for calculate function", () => {
