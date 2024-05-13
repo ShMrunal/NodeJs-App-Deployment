@@ -10,7 +10,7 @@
       with_items:
         - curl
         - apt-transport-https
-        - docker # or your preferred VM driver for Minikube
+        - virtualbox # or your preferred VM driver for Minikube
 
     - name: Add Docker GPG key
       apt_key:
@@ -28,4 +28,4 @@
         state: present
     
     - name: Start Minikube
-      command: minikube start --driver=docker
+      command: minikube start
