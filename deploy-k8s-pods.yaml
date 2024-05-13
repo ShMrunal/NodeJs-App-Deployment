@@ -10,7 +10,7 @@
           kind: Namespace
           metadata:
             name: nodejs-application-namespace
-      become: yes
+    
 
 - name: Deploy Docker Containers as Kubernetes Pods
   hosts: localhost
